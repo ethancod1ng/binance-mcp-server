@@ -27,10 +27,11 @@ export class BinanceMCPServer {
       version: serverConfig.version,
     });
 
-    this.binanceClient = Binance({
-      apiKey: config.apiKey,
-      apiSecret: config.apiSecret,
-    });
+      this.binanceClient = Binance({
+          apiKey: config.apiKey,
+          apiSecret: config.apiSecret,
+          httpBase: config.sandbox ? 'https://testnet.binance.vision' : 'https://api.binance.com',
+      });
 
     this.tools = new Map();
     this.setupTools();

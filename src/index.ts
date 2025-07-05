@@ -3,6 +3,8 @@
 import { BinanceMCPServer } from './server.js';
 import { logError } from './utils/error-handling.js';
 
+process.env.TZ = process.env.TZ || Intl.DateTimeFormat().resolvedOptions().timeZone;
+
 async function main(): Promise<void> {
   try {
     const server = new BinanceMCPServer();
