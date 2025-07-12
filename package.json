@@ -1,6 +1,6 @@
 {
   "name": "binance-mcp-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Binance MCP Server for Claude Code integration",
   "main": "dist/index.js",
   "bin": {
@@ -14,7 +14,13 @@
     "lint": "eslint src/**/*.ts",
     "typecheck": "tsc --noEmit"
   },
-  "keywords": ["binance", "mcp", "claude", "trading", "api"],
+  "keywords": [
+    "binance",
+    "mcp",
+    "claude",
+    "trading",
+    "api"
+  ],
   "author": "Ethan",
   "license": "MIT",
   "repository": {
