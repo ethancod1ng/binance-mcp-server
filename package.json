@@ -15,8 +15,23 @@
     "typecheck": "tsc --noEmit"
   },
   "keywords": ["binance", "mcp", "claude", "trading", "api"],
-  "author": "Your Name",
+  "author": "Ethan",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ethancod1ng/binance-mcp-server.git"
+  },
+  "homepage": "https://github.com/ethancod1ng/binance-mcp-server#readme",
+  "bugs": {
+    "url": "https://github.com/ethancod1ng/binance-mcp-server/issues"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "README_zh.md",
+    "README_ja.md",
+    "CLAUDE.md"
+  ],
   "dependencies": {
     "@modelcontextprotocol/sdk": "^0.4.0",
     "binance-api-node": "^0.12.6",

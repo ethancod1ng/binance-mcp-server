@@ -1,0 +1,47 @@
+# Source files
+src/
+*.ts
+
+# Development files
+.env*
+.git*
+node_modules/
+tsconfig.json
+.eslintrc*
+nodemon.json
+
+# Docker files
+Dockerfile
+docker-compose.yml
+
+# Development documentation
+binance_mcp_requirements.md
+claude-code-config.json
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# Temporary folders
+tmp/
+temp/
