@@ -22,29 +22,12 @@ npm install -g binance-mcp-server
 [![Claude](https://img.shields.io/badge/Claude-FF6B35?style=for-the-badge&logo=anthropic&logoColor=white)](https://claude.ai)
 [![Cursor](https://img.shields.io/badge/Cursor-000000?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.sh)
 
-#### Claude Code
+#### MCP 配置
 
-添加到您的 Claude Code MCP 配置中 (`claude_desktop_config.json`)：
+将以下配置添加到您的 MCP 设置文件中：
 
-```json
-{
-  "mcpServers": {
-    "binance": {
-      "command": "npx",
-      "args": ["binance-mcp-server"],
-      "env": {
-        "BINANCE_API_KEY": "您的_api_密钥",
-        "BINANCE_API_SECRET": "您的_api_秘钥",
-        "BINANCE_TESTNET": "true"
-      }
-    }
-  }
-}
-```
-
-#### Cursor
-
-添加到您的 Cursor MCP 设置中 (`.cursor/mcp_config.json`)：
+**Claude Desktop**: `claude_desktop_config.json`  
+**Cursor**: `.cursor/mcp_config.json`
 
 ```json
 {
@@ -64,11 +47,29 @@ npm install -g binance-mcp-server
 
 ### 环境设置
 
+#### 获取 API 密钥
+
+**测试网（推荐用于开发）：**
+1. 访问 [币安测试网](https://testnet.binance.vision/)
+2. 创建测试网账户（无需真实身份验证）
+3. 进入测试网账户的 API 管理
+4. 创建新的 API 密钥并开启交易权限
+5. 注意：测试网使用虚拟资金 - 完全安全，用于测试
+
+**主网（生产环境）：**
+1. 在 [币安](https://www.binance.com/) 创建已验证的账户
+2. 完成 KYC 身份验证
+3. 进入账户设置的 API 管理
+4. 创建新的 API 密钥并设置所需权限
+5. ⚠️ **警告：主网使用真实资金 - 请格外小心！**
+
+#### 配置
+
 创建 `.env` 文件：
 ```env
 BINANCE_API_KEY=您的_api_密钥
 BINANCE_API_SECRET=您的_api_秘钥
-BINANCE_TESTNET=true
+BINANCE_TESTNET=true  # 设置为 false 以使用主网（真实资金）
 ```
 
 ## 可用工具
@@ -84,10 +85,10 @@ BINANCE_TESTNET=true
 - `get_open_orders` - 获取当前挂单
 - `get_order_history` - 获取历史订单
 
-### 交易（仅测试网）
-- `place_order` - 下新订单
-- `cancel_order` - 取消指定订单
-- `cancel_all_orders` - 取消所有挂单
+### 交易（主网和测试网）
+- `place_order` - 下新订单（支持主网和测试网）
+- `cancel_order` - 取消指定订单（支持主网和测试网）
+- `cancel_all_orders` - 取消所有挂单（支持主网和测试网）
 
 ## 使用示例
 
@@ -99,7 +100,10 @@ BINANCE_TESTNET=true
 
 ## 安全
 
-⚠️ **重要**：为安全起见，交易功能仅在 `BINANCE_TESTNET=true` 时工作。
+⚠️ **重要**：
+- 设置 `BINANCE_TESTNET=true` 使用虚拟资金进行安全测试
+- 设置 `BINANCE_TESTNET=false` 或省略以进行主网交易（真实资金）
+- 主网交易将在执行订单前显示警告
 
 ## 开发
 

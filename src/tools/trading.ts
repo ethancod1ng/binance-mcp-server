@@ -8,18 +8,20 @@ import {
 } from '../types/mcp.js';
 import { validateInput, validateSymbol, validateQuantity, validatePrice } from '../utils/validation.js';
 import { handleBinanceError } from '../utils/error-handling.js';
-import { isTestnetEnabled } from '../config/binance.js';
+import { isTestnetEnabled, getNetworkMode } from '../config/binance.js';
 
-function validateTestnetEnabled(): void {
-  if (!isTestnetEnabled()) {
-    throw new Error('Trading functions are only available in testnet mode. Set BINANCE_TESTNET=true');
+function validateAndWarnMainnet(): string {
+  const networkMode = getNetworkMode();
+  if (networkMode === 'mainnet') {
+    console.warn('⚠️  WARNING: Trading on MAINNET with REAL money! Double-check your orders before confirming.');
   }
+  return networkMode;
 }
 
 export const tradingTools = [
   {
     name: 'place_order',
-    description: '下单交易（仅限测试网环境）',
+    description: '下单交易 - 支持主网和测试网（主网将使用真实资金）',
     inputSchema: {
       type: 'object',
       properties: {
@@ -49,7 +51,7 @@ export const tradingTools = [
       required: ['symbol', 'side', 'type', 'quantity'],
     },
     handler: async (binanceClient: any, args: unknown) => {
-      validateTestnetEnabled();
+      const networkMode = validateAndWarnMainnet();
       
       const input = validateInput(PlaceOrderSchema, args);
       validateSymbol(input.symbol);
@@ -94,7 +96,7 @@ export const tradingTools = [
           side: orderResult.side,
           fills: orderResult.fills || [],
           timestamp: Date.now(),
-          testnet: true,
+          network: networkMode,
         };
       } catch (error) {
         handleBinanceError(error);
@@ -104,7 +106,7 @@ export const tradingTools = [
 
   {
     name: 'cancel_order',
-    description: '取消指定订单（仅限测试网环境）',
+    description: '取消指定订单 - 支持主网和测试网',
     inputSchema: {
       type: 'object',
       properties: {
@@ -120,7 +122,7 @@ export const tradingTools = [
       required: ['symbol', 'orderId'],
     },
     handler: async (binanceClient: any, args: unknown) => {
-      validateTestnetEnabled();
+      const networkMode = validateAndWarnMainnet();
       
       const input = validateInput(CancelOrderSchema, args);
       validateSymbol(input.symbol);
@@ -146,7 +148,7 @@ export const tradingTools = [
           type: cancelResult.type,
           side: cancelResult.side,
           timestamp: Date.now(),
-          testnet: true,
+          network: networkMode,
         };
       } catch (error) {
         handleBinanceError(error);
@@ -156,7 +158,7 @@ export const tradingTools = [
 
   {
     name: 'cancel_all_orders',
-    description: '取消指定交易对所有挂单（仅限测试网环境）',
+    description: '取消指定交易对所有挂单 - 支持主网和测试网',
     inputSchema: {
       type: 'object',
       properties: {
@@ -168,7 +170,7 @@ export const tradingTools = [
       required: ['symbol'],
     },
     handler: async (binanceClient: any, args: unknown) => {
-      validateTestnetEnabled();
+      const networkMode = validateAndWarnMainnet();
       
       const input = validateInput(CancelAllOrdersSchema, args);
       validateSymbol(input.symbol);
@@ -197,7 +199,7 @@ export const tradingTools = [
           })) : [cancelResults],
           count: Array.isArray(cancelResults) ? cancelResults.length : 1,
           timestamp: Date.now(),
-          testnet: true,
+          network: networkMode,
         };
       } catch (error) {
         handleBinanceError(error);

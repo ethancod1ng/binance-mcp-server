@@ -22,29 +22,12 @@ npm install -g binance-mcp-server
 [![Claude](https://img.shields.io/badge/Claude-FF6B35?style=for-the-badge&logo=anthropic&logoColor=white)](https://claude.ai)
 [![Cursor](https://img.shields.io/badge/Cursor-000000?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.sh)
 
-#### Claude Code
+#### MCP 設定
 
-Claude Code MCP 設定に追加 (`claude_desktop_config.json`)：
+以下の設定を MCP 設定ファイルに追加してください：
 
-```json
-{
-  "mcpServers": {
-    "binance": {
-      "command": "npx",
-      "args": ["binance-mcp-server"],
-      "env": {
-        "BINANCE_API_KEY": "あなたの_api_キー",
-        "BINANCE_API_SECRET": "あなたの_api_シークレット",
-        "BINANCE_TESTNET": "true"
-      }
-    }
-  }
-}
-```
-
-#### Cursor
-
-Cursor MCP 設定に追加 (`.cursor/mcp_config.json`)：
+**Claude Desktop**: `claude_desktop_config.json`  
+**Cursor**: `.cursor/mcp_config.json`
 
 ```json
 {
@@ -64,11 +47,29 @@ Cursor MCP 設定に追加 (`.cursor/mcp_config.json`)：
 
 ### 環境設定
 
+#### API キーの取得
+
+**テストネット（開発推奨）：**
+1. [Binance テストネット](https://testnet.binance.vision/) にアクセス
+2. テストネットアカウントを作成（実際の本人確認不要）
+3. テストネットアカウントの API 管理に移動
+4. 取引権限付きの新しい API キーを作成
+5. 注意：テストネットは仮想資金を使用 - テスト用に完全に安全
+
+**メインネット（本番環境）：**
+1. [Binance](https://www.binance.com/) で認証済みアカウントを作成
+2. KYC 本人確認を完了
+3. アカウント設定の API 管理に移動
+4. 必要な権限で新しい API キーを作成
+5. ⚠️ **警告：メインネットは実際のお金を使用 - 十分注意してください！**
+
+#### 設定
+
 `.env` ファイルを作成：
 ```env
 BINANCE_API_KEY=あなたの_api_キー
 BINANCE_API_SECRET=あなたの_api_シークレット
-BINANCE_TESTNET=true
+BINANCE_TESTNET=true  # メインネット用に false に設定（実際のお金）
 ```
 
 ## 利用可能なツール
@@ -84,10 +85,10 @@ BINANCE_TESTNET=true
 - `get_open_orders` - 現在の未約定注文を取得
 - `get_order_history` - 注文履歴を取得
 
-### 取引（テストネットのみ）
-- `place_order` - 新しい注文を発注
-- `cancel_order` - 特定の注文をキャンセル
-- `cancel_all_orders` - 全ての未約定注文をキャンセル
+### 取引（メインネットとテストネット）
+- `place_order` - 新しい注文を発注（メインネットとテストネットに対応）
+- `cancel_order` - 特定の注文をキャンセル（メインネットとテストネットに対応）
+- `cancel_all_orders` - 全ての未約定注文をキャンセル（メインネットとテストネットに対応）
 
 ## 使用例
 
@@ -99,7 +100,10 @@ Claude に尋ねる：
 
 ## セキュリティ
 
-⚠️ **重要**：安全のため、取引機能は `BINANCE_TESTNET=true` でのみ動作します。
+⚠️ **重要**：
+- `BINANCE_TESTNET=true` を設定して仮想資金で安全にテスト
+- `BINANCE_TESTNET=false` を設定または省略してメインネット取引（実際のお金）
+- メインネット取引では注文実行前に警告が表示されます
 
 ## 開発
 

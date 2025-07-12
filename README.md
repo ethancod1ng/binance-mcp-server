@@ -22,9 +22,12 @@ This MCP server can be used with various AI tools that support MCP:
 [![Claude](https://img.shields.io/badge/Claude-FF6B35?style=for-the-badge&logo=anthropic&logoColor=white)](https://claude.ai)
 [![Cursor](https://img.shields.io/badge/Cursor-000000?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.sh)
 
-#### Claude Code
+#### MCP Configuration
 
-Add to your Claude Code MCP configuration (`claude_desktop_config.json`):
+Add the following configuration to your MCP settings file:
+
+**Claude Desktop**: `claude_desktop_config.json`  
+**Cursor**: `.cursor/mcp_config.json`
 
 ```json
 {
@@ -42,34 +45,32 @@ Add to your Claude Code MCP configuration (`claude_desktop_config.json`):
 }
 ```
 
-#### Cursor
-
-Add to your Cursor MCP settings (`.cursor/mcp_config.json`):
-
-```json
-{
-  "mcpServers": {
-    "binance": {
-      "command": "npx",
-      "args": ["binance-mcp-server"],
-      "env": {
-        "BINANCE_API_KEY": "your_api_key",
-        "BINANCE_API_SECRET": "your_api_secret", 
-        "BINANCE_TESTNET": "true"
-      }
-    }
-  }
-}
-```
-
 
 ### Environment Setup
+
+#### Getting API Keys
+
+**For Testnet (Recommended for Development):**
+1. Visit [Binance Testnet](https://testnet.binance.vision/)
+2. Create a testnet account (no real verification required)
+3. Go to API Management in your testnet account
+4. Create a new API key with trading permissions
+5. Note: Testnet uses virtual funds - completely safe for testing
+
+**For Mainnet (Production):**
+1. Create a verified account on [Binance](https://www.binance.com/)
+2. Complete KYC verification
+3. Go to API Management in your account settings
+4. Create a new API key with required permissions
+5. ⚠️ **Warning: Mainnet uses real money - be very careful!**
+
+#### Configuration
 
 Create `.env` file:
 ```env
 BINANCE_API_KEY=your_api_key_here
 BINANCE_API_SECRET=your_api_secret_here
-BINANCE_TESTNET=true
+BINANCE_TESTNET=true  # Set to false for mainnet (REAL money)
 ```
 
 ## Available Tools
@@ -85,10 +86,10 @@ BINANCE_TESTNET=true
 - `get_open_orders` - Get current open orders
 - `get_order_history` - Get historical orders
 
-### Trading (Testnet Only)
-- `place_order` - Place a new order
-- `cancel_order` - Cancel specific order
-- `cancel_all_orders` - Cancel all open orders
+### Trading (Mainnet & Testnet)
+- `place_order` - Place a new order (supports both mainnet and testnet)
+- `cancel_order` - Cancel specific order (supports both mainnet and testnet)
+- `cancel_all_orders` - Cancel all open orders (supports both mainnet and testnet)
 
 ## Usage Examples
 
@@ -100,7 +101,10 @@ Ask Claude to:
 
 ## Security
 
-⚠️ **Important**: Trading functions only work with `BINANCE_TESTNET=true` for safety.
+⚠️ **Important**: 
+- Set `BINANCE_TESTNET=true` for safe testing with virtual funds
+- Set `BINANCE_TESTNET=false` or omit for mainnet trading with REAL money
+- Mainnet trading will display warnings before executing orders
 
 ## Development
 

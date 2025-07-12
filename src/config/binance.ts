@@ -36,6 +36,10 @@ export function isTestnetEnabled(): boolean {
   return process.env.BINANCE_TESTNET === 'true';
 }
 
+export function getNetworkMode(): 'testnet' | 'mainnet' {
+  return isTestnetEnabled() ? 'testnet' : 'mainnet';
+}
+
 export function getLogLevel(): string {
   return process.env.LOG_LEVEL || 'info';
 }
