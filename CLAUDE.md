@@ -18,6 +18,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Copy `.env.example` to `.env` and configure Binance API credentials
 - Set `BINANCE_TESTNET=true` for safe testing (trading tools only work in testnet mode)
 
+**Docker Deployment:**
+- `docker build -t binance-mcp-server .` - Build Docker image
+- `docker-compose up -d` - Deploy with Docker Compose
+- `docker-compose down` - Stop and remove containers
+- `docker-compose logs -f` - View container logs
+
 ## Architecture Overview
 
 This is a **Model Context Protocol (MCP) server** that exposes Binance exchange API functionality to Claude Code through standardized tools.
@@ -76,3 +82,62 @@ Tool handlers should:
 ### Binance API Integration
 
 Uses `binance-api-node` library with rate limiting respect. The client is initialized once and reused across all tool calls. Testnet mode is controlled by environment variable and enforced at the tool level for trading operations.
+
+## Docker Deployment
+
+The MCP server can be deployed using Docker for easy containerization and deployment.
+
+### Prerequisites
+
+- Docker and Docker Compose installed
+- `.env` file configured with Binance API credentials
+
+### Quick Start
+
+1. **Build and run with Docker Compose:**
+   ```bash
+   docker-compose up -d
+   ```
+
+2. **View logs:**
+   ```bash
+   docker-compose logs -f
+   ```
+
+3. **Stop the service:**
+   ```bash
+   docker-compose down
+   ```
+
+### Manual Docker Build
+
+1. **Build the Docker image:**
+   ```bash
+   docker build -t binance-mcp-server .
+   ```
+
+2. **Run the container:**
+   ```bash
+   docker run -d \
+     --name binance-mcp-server \
+     --env-file .env \
+     binance-mcp-server
+   ```
+
+### Configuration
+
+The Docker deployment uses the following environment variables:
+
+- `BINANCE_API_KEY` - Your Binance API key
+- `BINANCE_API_SECRET` - Your Binance API secret  
+- `BINANCE_TESTNET` - Set to `true` for testnet (default: `true`)
+- `MCP_SERVER_NAME` - Server name identifier
+- `MCP_SERVER_VERSION` - Server version
+- `LOG_LEVEL` - Logging level (info, debug, error)
+
+### Security Considerations
+
+- The container runs as a non-root user for security
+- API credentials are loaded from environment variables only
+- Resource limits are configured to prevent resource exhaustion
+- Trading functions only work in testnet mode for safety
