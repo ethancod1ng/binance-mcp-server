@@ -50,4 +50,4 @@ docs/
 # 其他
 .eslintrc.js
 .prettierrc
-tsconfig.json
+#tsconfig.json
