@@ -1,0 +1,44 @@
+# Smithery configuration file: https://smithery.ai/docs/build/project-config
+
+startCommand:
+  type: stdio
+  commandFunction:
+    # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
+    |-
+    (config) => ({ command: 'npx', args: ['tsx', 'src/index.ts'], env: { BINANCE_API_KEY: config.binanceApiKey, BINANCE_API_SECRET: config.binanceApiSecret, BINANCE_TESTNET: config.binanceTestnet.toString(), MCP_SERVER_NAME: config.mcpServerName, MCP_SERVER_VERSION: config.mcpServerVersion, LOG_LEVEL: config.logLevel } })
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    required:
+      - binanceApiKey
+      - binanceApiSecret
+    properties:
+      binanceApiKey:
+        type: string
+        description: Your Binance API key
+      binanceApiSecret:
+        type: string
+        description: Your Binance API secret
+      binanceTestnet:
+        type: boolean
+        default: true
+        description: Enable Binance testnet (true for testnet, false for mainnet)
+      mcpServerName:
+        type: string
+        default: binance-mcp-server
+        description: MCP server name
+      mcpServerVersion:
+        type: string
+        default: 1.0.1
+        description: MCP server version
+      logLevel:
+        type: string
+        default: info
+        description: Log level
+  exampleConfig:
+    binanceApiKey: test_api_key_123
+    binanceApiSecret: test_api_secret_456
+    binanceTestnet: true
+    mcpServerName: binance-mcp-server
+    mcpServerVersion: 1.0.1
+    logLevel: info
