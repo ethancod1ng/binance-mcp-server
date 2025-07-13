@@ -1,5 +1,6 @@
 # Binance MCP Server
 
+[![npm](https://img.shields.io/npm/dt/binance-mcp-server?logo=npm)](https://www.npmjs.com/package/binance-mcp-server)
 [![smithery badge](https://smithery.ai/badge/@ethancod1ng/binance-mcp-server)](https://smithery.ai/server/@ethancod1ng/binance-mcp-server)
 
 > **Multi-language Documentation**
@@ -12,16 +13,6 @@ A Model Context Protocol (MCP) server that provides Claude Code with Binance exc
 ## Quick Start
 
 ### Installation
-
-#### Installing via Smithery
-
-To install Binance MCP Server for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@ethancod1ng/binance-mcp-server):
-
-```bash
-npx -y @smithery/cli install @ethancod1ng/binance-mcp-server --client claude
-```
-
-#### Manual Installation
 
 ```bash
 npm install -g binance-mcp-server

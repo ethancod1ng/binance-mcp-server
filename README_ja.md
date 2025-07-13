@@ -1,5 +1,8 @@
 # Binance MCP サーバー
 
+[![npm](https://img.shields.io/npm/dt/binance-mcp-server?logo=npm)](https://www.npmjs.com/package/binance-mcp-server)
+[![smithery badge](https://smithery.ai/badge/@ethancod1ng/binance-mcp-server)](https://smithery.ai/server/@ethancod1ng/binance-mcp-server)
+
 > **多言語ドキュメント**
 > - [English](README.md)
 > - [中文](README_zh.md)
