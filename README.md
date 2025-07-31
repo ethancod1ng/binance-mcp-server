@@ -84,6 +84,13 @@ BINANCE_TESTNET=true  # Set to false for mainnet (REAL money)
 - `get_klines` - Get K-line/candlestick data
 - `get_24hr_ticker` - Get 24-hour price statistics
 
+### Technical Analysis 🆕
+- `get_rsi` - Calculate RSI (Relative Strength Index) with overbought/oversold signals
+- `get_macd` - Calculate MACD indicator with bullish/bearish signals
+- `get_bollinger_bands` - Calculate Bollinger Bands with price position analysis
+- `get_moving_averages` - Calculate SMA/EMA with trend analysis
+- `get_support_resistance` - Identify key support and resistance levels
+
 ### Account
 - `get_account_info` - Get account information and balances
 - `get_open_orders` - Get current open orders
@@ -97,10 +104,28 @@ BINANCE_TESTNET=true  # Set to false for mainnet (REAL money)
 ## Usage Examples
 
 Ask Claude to:
+
+**Market Data:**
 - "Get the current price of Bitcoin"
 - "Show me the order book for ETHUSDT"
+- "Get the 24-hour price statistics for ADAUSDT"
+
+**Technical Analysis:**
+- "Calculate the RSI for BTCUSDT on 4-hour timeframe"
+- "Show me the MACD indicator for ETHUSDT"
+- "What are the Bollinger Bands for SOLUSDT?"
+- "Calculate moving averages (5, 10, 20, 50) for BNBUSDT"
+- "Find support and resistance levels for DOGEUSDT"
+
+**Account Management:**
 - "Check my account balance"
+- "Show me my open orders"
+- "Get my trading history for BTCUSDT"
+
+**Trading (Testnet recommended):**
 - "Place a limit buy order for 0.001 BTC at $50,000"
+- "Cancel my order with ID 12345 for ETHUSDT"
+- "Cancel all open orders for ADAUSDT"
 
 ## Security
 
