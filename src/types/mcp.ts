@@ -79,3 +79,44 @@ export type GetMACDInput = z.infer<typeof GetTechnicalIndicatorSchema>;
 export type GetBollingerBandsInput = z.infer<typeof GetTechnicalIndicatorSchema>;
 export type GetMovingAverageInput = z.infer<typeof GetTechnicalIndicatorSchema>;
 export type GetSupportResistanceInput = z.infer<typeof GetTechnicalIndicatorSchema>;
+
+// 报告工具相关Schema
+export const ExportTradingHistorySchema = z.object({
+  symbol: z.string().describe('交易对符号，如 BTCUSDT'),
+  startTime: z.number().optional().describe('开始时间戳（毫秒）'),
+  endTime: z.number().optional().describe('结束时间戳（毫秒）'),
+  limit: z.number().optional().default(500).describe('记录数量限制，默认500'),
+  format: z.enum(['json', 'detailed']).optional().default('json').describe('导出格式'),
+});
+
+export const GeneratePerformanceReportSchema = z.object({
+  symbols: z.array(z.string()).describe('交易对符号数组，如 ["BTCUSDT", "ETHUSDT"]'),
+  startTime: z.number().optional().describe('开始时间戳（毫秒）'),
+  endTime: z.number().optional().describe('结束时间戳（毫秒）'),
+  includeUnrealized: z.boolean().optional().default(true).describe('是否包含未实现盈亏'),
+});
+
+export const ExportTaxReportSchema = z.object({
+  year: z.number().describe('税务年度，如 2024'),
+  symbols: z.array(z.string()).describe('交易对符号数组'),
+  country: z.string().optional().default('US').describe('国家代码，默认US'),
+  includeStaking: z.boolean().optional().default(false).describe('是否包含质押收益'),
+});
+
+export const GetProfitLossSummarySchema = z.object({
+  symbols: z.array(z.string()).describe('交易对符号数组'),
+  period: z.enum(['7d', '30d', '90d', '1y']).optional().default('30d').describe('统计周期'),
+});
+
+export const GenerateMonthlyReportSchema = z.object({
+  year: z.number().describe('年份，如 2024'),
+  month: z.number().min(1).max(12).describe('月份，1-12'),
+  symbols: z.array(z.string()).describe('交易对符号数组'),
+});
+
+// 报告工具相关类型
+export type ExportTradingHistoryInput = z.infer<typeof ExportTradingHistorySchema>;
+export type GeneratePerformanceReportInput = z.infer<typeof GeneratePerformanceReportSchema>;
+export type ExportTaxReportInput = z.infer<typeof ExportTaxReportSchema>;
+export type GetProfitLossSummaryInput = z.infer<typeof GetProfitLossSummarySchema>;
+export type GenerateMonthlyReportInput = z.infer<typeof GenerateMonthlyReportSchema>;

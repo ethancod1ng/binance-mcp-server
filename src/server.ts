@@ -11,6 +11,7 @@ import { marketDataTools } from './tools/market-data.js';
 import { accountTools } from './tools/account.js';
 import { tradingTools } from './tools/trading.js';
 import { technicalAnalysisTools } from './tools/technical-analysis.js';
+import { reportingTools } from './tools/reporting.js';
 
 export class BinanceMCPServer {
   private server: Server;
@@ -45,6 +46,7 @@ export class BinanceMCPServer {
       ...accountTools,
       ...tradingTools,
       ...technicalAnalysisTools,
+      ...reportingTools,
     ];
 
     for (const tool of allTools) {
