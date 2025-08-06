@@ -16,9 +16,9 @@ Claude Code に Binance 取引所 API 機能を提供する Model Context Protoc
 
 包括的な MCP 使用チュートリアルを視聴して、すぐに始めましょう：
 
-![MCP 使用チュートリアル](docs/mcp-usage-tutorial.mp4)
+![MCP 使用チュートリアル](docs/mcp-usage-tutorial.gif)
 
-*注意：ビデオが正常に表示されない場合は、`docs/mcp-usage-tutorial.mp4` から直接ダウンロードして視聴できます。*
+*注意：完全なビデオチュートリアルは `docs/mcp-usage-tutorial.mp4` で見つけることができます。*
 
 ### インストール
 

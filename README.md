@@ -16,9 +16,9 @@ A Model Context Protocol (MCP) server that provides Claude Code with Binance exc
 
 Watch our comprehensive MCP usage tutorial to get started quickly:
 
-![MCP Usage Tutorial](docs/mcp-usage-tutorial.mp4)
+![MCP Usage Tutorial](docs/mcp-usage-tutorial.gif)
 
-*Note: If the video doesn't display properly, you can download and view it directly from `docs/mcp-usage-tutorial.mp4`.*
+*Note: For the full video tutorial, you can also find it in `docs/mcp-usage-tutorial.mp4`.*
 
 ### Installation
 

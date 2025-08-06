@@ -16,9 +16,9 @@
 
 观看我们的综合 MCP 使用教程，快速上手：
 
-![MCP 使用教程](docs/mcp-usage-tutorial.mp4)
+![MCP 使用教程](docs/mcp-usage-tutorial.gif)
 
-*注意：如果视频无法正常显示，您可以直接从 `docs/mcp-usage-tutorial.mp4` 下载并查看。*
+*注意：完整的视频教程可以在 `docs/mcp-usage-tutorial.mp4` 中找到。*
 
 ### 安装
 
