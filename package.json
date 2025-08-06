@@ -1,7 +1,7 @@
 {
   "name": "binance-mcp-server",
   "version": "1.0.1",
-  "description": "Binance MCP Server for Claude Code integration",
+  "description": "MCP server for Binance market data and trading integration",
   "main": "dist/index.js",
   "bin": {
     "binance-mcp-server": "./dist/index.js"

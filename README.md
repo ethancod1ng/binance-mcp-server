@@ -12,6 +12,14 @@ A Model Context Protocol (MCP) server that provides Claude Code with Binance exc
 
 ## Quick Start
 
+### 📹 Video Tutorial
+
+Watch our comprehensive MCP usage tutorial to get started quickly:
+
+![MCP Usage Tutorial](docs/mcp-usage-tutorial.mp4)
+
+*Note: If the video doesn't display properly, you can download and view it directly from `docs/mcp-usage-tutorial.mp4`.*
+
 ### Installation
 
 ```bash
@@ -116,7 +124,3 @@ npm run build    # Compile TypeScript
 npm run dev      # Development mode
 npm run lint     # Run linting
 ```
-
-## License
-
-MIT License
