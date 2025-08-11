@@ -5,8 +5,8 @@
 
 > **Multi-language Documentation**
 > - [English](README.md) (current)
-> - [中文](README_zh.md)
-> - [日本語](README_ja.md)
+> - [中文](docs/README_zh.md)
+> - [日本語](docs/README_ja.md)
 
 A Model Context Protocol (MCP) server that provides Claude Code with Binance exchange API functionality.
 
@@ -18,7 +18,6 @@ Watch our comprehensive MCP usage tutorial to get started quickly:
 
 ![MCP Usage Tutorial](docs/mcp-usage-tutorial.gif)
 
-*Note: For the full video tutorial, you can also find it in `docs/mcp-usage-tutorial.mp4`.*
 
 ### Installation
 
@@ -31,15 +30,12 @@ npm install -g binance-mcp-server
 This MCP server can be used with various AI tools that support MCP:
 
 [![Claude](https://img.shields.io/badge/Claude-FF6B35?style=for-the-badge&logo=anthropic&logoColor=white)](https://claude.ai)
-[![Cursor](https://img.shields.io/badge/Cursor-000000?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.sh)
+[![Cursor](https://img.shields.io/badge/Cursor-000000?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.com)
+[![Trae](https://img.shields.io/badge/Trae-00C851?style=for-the-badge&logo=ai&logoColor=white)](https://trae.ai)
 
 #### MCP Configuration
 
 Add the following configuration to your MCP settings file:
-
-**Claude Desktop**: `claude_desktop_config.json`  
-**Cursor**: `.cursor/mcp_config.json`
-
 ```json
 {
   "mcpServers": {
@@ -49,11 +45,19 @@ Add the following configuration to your MCP settings file:
       "env": {
         "BINANCE_API_KEY": "your_api_key",
         "BINANCE_API_SECRET": "your_api_secret",
-        "BINANCE_TESTNET": "true"
+        "BINANCE_TESTNET": "false"
       }
     }
   }
 }
+```
+
+> **Note**: Set `BINANCE_TESTNET` to `"true"` if you want to use the Binance testnet for development and testing.
+
+#### One-Click Setup with Claude Code
+
+```bash
+claude mcp add binance --env BINANCE_API_KEY=YOUR_API_KEY --env BINANCE_API_SECRET=YOUR_API_SECRET --env BINANCE_TESTNET=false -- npx -y binance-mcp-server
 ```
 
 

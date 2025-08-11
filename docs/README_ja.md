@@ -4,7 +4,7 @@
 [![smithery badge](https://smithery.ai/badge/@ethancod1ng/binance-mcp-server)](https://smithery.ai/server/@ethancod1ng/binance-mcp-server)
 
 > **多言語ドキュメント**
-> - [English](README.md)
+> - [English](../README.md)
 > - [中文](README_zh.md)
 > - [日本語](README_ja.md) (現在)
 
@@ -18,7 +18,7 @@ Claude Code に Binance 取引所 API 機能を提供する Model Context Protoc
 
 ![MCP 使用チュートリアル](docs/mcp-usage-tutorial.gif)
 
-*注意：完全なビデオチュートリアルは `docs/mcp-usage-tutorial.mp4` で見つけることができます。*
+
 
 ### インストール
 
@@ -31,15 +31,12 @@ npm install -g binance-mcp-server
 この MCP サーバーは MCP をサポートする様々な AI ツールで使用できます：
 
 [![Claude](https://img.shields.io/badge/Claude-FF6B35?style=for-the-badge&logo=anthropic&logoColor=white)](https://claude.ai)
-[![Cursor](https://img.shields.io/badge/Cursor-000000?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.sh)
+[![Cursor](https://img.shields.io/badge/Cursor-000000?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.com)
+[![Trae](https://img.shields.io/badge/Trae-00C851?style=for-the-badge&logo=ai&logoColor=white)](https://trae.ai)
 
 #### MCP 設定
 
 以下の設定を MCP 設定ファイルに追加してください：
-
-**Claude Desktop**: `claude_desktop_config.json`  
-**Cursor**: `.cursor/mcp_config.json`
-
 ```json
 {
   "mcpServers": {
@@ -49,12 +46,21 @@ npm install -g binance-mcp-server
       "env": {
         "BINANCE_API_KEY": "あなたの_api_キー",
         "BINANCE_API_SECRET": "あなたの_api_シークレット",
-        "BINANCE_TESTNET": "true"
+        "BINANCE_TESTNET": "false"
       }
     }
   }
 }
 ```
+
+> **注意**：開発とテスト用に Binance テストネットを使用したい場合は、`BINANCE_TESTNET` を `"true"` に設定してください。
+
+#### Claude Code ワンクリック設定
+
+```bash
+claude mcp add binance --env BINANCE_API_KEY=YOUR_API_KEY --env BINANCE_API_SECRET=YOUR_API_SECRET --env BINANCE_TESTNET=false -- npx -y binance-mcp-server
+```
+
 
 ### 環境設定
 

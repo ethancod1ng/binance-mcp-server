@@ -4,7 +4,7 @@
 [![smithery badge](https://smithery.ai/badge/@ethancod1ng/binance-mcp-server)](https://smithery.ai/server/@ethancod1ng/binance-mcp-server)
 
 > **多语言文档**
-> - [English](README.md)
+> - [English](../README.md)
 > - [中文](README_zh.md) (当前)
 > - [日本語](README_ja.md)
 
@@ -18,7 +18,7 @@
 
 ![MCP 使用教程](docs/mcp-usage-tutorial.gif)
 
-*注意：完整的视频教程可以在 `docs/mcp-usage-tutorial.mp4` 中找到。*
+
 
 ### 安装
 
@@ -31,15 +31,12 @@ npm install -g binance-mcp-server
 此 MCP 服务器可与多种支持 MCP 的 AI 工具配合使用：
 
 [![Claude](https://img.shields.io/badge/Claude-FF6B35?style=for-the-badge&logo=anthropic&logoColor=white)](https://claude.ai)
-[![Cursor](https://img.shields.io/badge/Cursor-000000?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.sh)
+[![Cursor](https://img.shields.io/badge/Cursor-000000?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.com)
+[![Trae](https://img.shields.io/badge/Trae-00C851?style=for-the-badge&logo=ai&logoColor=white)](https://trae.ai)
 
 #### MCP 配置
 
 将以下配置添加到您的 MCP 设置文件中：
-
-**Claude Desktop**: `claude_desktop_config.json`  
-**Cursor**: `.cursor/mcp_config.json`
-
 ```json
 {
   "mcpServers": {
@@ -49,12 +46,21 @@ npm install -g binance-mcp-server
       "env": {
         "BINANCE_API_KEY": "您的_api_密钥",
         "BINANCE_API_SECRET": "您的_api_秘钥",
-        "BINANCE_TESTNET": "true"
+        "BINANCE_TESTNET": "false"
       }
     }
   }
 }
 ```
+
+> **注意**：如果您想使用币安测试网进行开发和测试，请将 `BINANCE_TESTNET` 设置为 `"true"`。
+
+#### Claude Code 一键设置
+
+```bash
+claude mcp add binance --env BINANCE_API_KEY=YOUR_API_KEY --env BINANCE_API_SECRET=YOUR_API_SECRET --env BINANCE_TESTNET=false -- npx -y binance-mcp-server
+```
+
 
 ### 环境设置
 
