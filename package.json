@@ -1,6 +1,6 @@
 {
   "name": "binance-mcp-server",
-  "version": "1.0.3",
+  "version": "1.1.1",
   "description": "MCP server for Binance market data and trading integration",
   "main": "dist/index.js",
   "bin": {
