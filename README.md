@@ -10,6 +10,10 @@
 
 A Model Context Protocol (MCP) server that provides Claude Code with Binance exchange API functionality.
 
+<a href="https://glama.ai/mcp/servers/@ethancod1ng/binance-mcp-server">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@ethancod1ng/binance-mcp-server/badge" alt="Binance Server MCP server" />
+</a>
+
 ## Quick Start
 
 ### 📹 Video Tutorial
