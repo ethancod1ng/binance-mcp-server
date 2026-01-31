@@ -1,7 +1,6 @@
 # Binance MCP Server
 
 [![npm](https://img.shields.io/npm/dt/binance-mcp-server?logo=npm)](https://www.npmjs.com/package/binance-mcp-server)
-[![smithery badge](https://smithery.ai/badge/@ethancod1ng/binance-mcp-server)](https://smithery.ai/server/@ethancod1ng/binance-mcp-server)
 
 > **Multi-language Documentation**
 > - [English](README.md) (current)
@@ -10,16 +9,9 @@
 
 A Model Context Protocol (MCP) server that provides Claude Code with Binance exchange API functionality.
 
-<a href="https://glama.ai/mcp/servers/@ethancod1ng/binance-mcp-server">
-  <img width="380" height="200" src="https://glama.ai/mcp/servers/@ethancod1ng/binance-mcp-server/badge" alt="Binance Server MCP server" />
-</a>
-
 ## Quick Start
-
 ### 📹 Video Tutorial
-
 Watch our comprehensive MCP usage tutorial to get started quickly:
-
 ![MCP Usage Tutorial](docs/mcp-usage-tutorial.gif)
 
 
