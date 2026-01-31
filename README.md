@@ -1,6 +1,8 @@
 # Binance MCP Server
 
-[![npm](https://img.shields.io/npm/dt/binance-mcp-server?logo=npm)](https://www.npmjs.com/package/binance-mcp-server)
+<a href="https://www.npmjs.com/package/binance-mcp-server" target="_blank" rel="noopener noreferrer">
+  <img src="https://img.shields.io/npm/dt/binance-mcp-server?logo=npm" alt="npm">
+</a>
 
 > **Multi-language Documentation**
 > - [English](README.md) (current)
