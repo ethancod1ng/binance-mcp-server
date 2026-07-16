@@ -28,10 +28,13 @@ export class BinanceMCPServer {
     });
 
       this.binanceClient = Binance({
-          apiKey: config.apiKey,
-          apiSecret: config.apiSecret,
-          httpBase: config.sandbox ? 'https://testnet.binance.vision' : 'https://api.binance.com',
-      });
+              apiKey: config.apiKey,
+              apiSecret: config.apiSecret,
+              httpBase: config.sandbox ? 'https://testnet.binance.vision' : 'https://api.binance.com',
+              useServerTime: true,
+              recvWindow: config.recvWindow,
+              timeout: config.timeout,
+          });
 
     this.tools = new Map();
     this.setupTools();
