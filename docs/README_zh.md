@@ -1,130 +1,92 @@
 # Binance MCP 服务器
 
-[![npm](https://img.shields.io/npm/dt/binance-mcp-server?logo=npm)](https://www.npmjs.com/package/binance-mcp-server)
+[English](../README.md) | [中文](README_zh.md) | [日本語](README_ja.md)
 
-> **多语言文档**
-> - [English](../README.md)
-> - [中文](README_zh.md) (当前)
-> - [日本語](README_ja.md)
+面向支持 MCP 的 AI 客户端，提供币安**现货**查询及交易功能，使用 stdio，共 10 个工具。要求 Node.js **24+**。未提供合约、提现或行情流订阅工具。
 
-为 Claude Code 提供币安交易所 API 功能的 Model Context Protocol (MCP) 服务器。
+**2.0.0 尚未发布。** 发布前请从源码安装。升级行为见[发布说明](../CHANGELOG.md)。
 
-## 快速开始
-
-### 📹 视频教程
-
-观看我们的综合 MCP 使用教程，快速上手：
-
-![MCP 使用教程](docs/mcp-usage-tutorial.gif)
-
-
-
-### 安装
+## 从源码安装
 
 ```bash
-npm install -g binance-mcp-server
+git clone https://github.com/ethancod1ng/binance-mcp-server.git
+cd binance-mcp-server
+npm ci
+npm run build
+cp .env.example .env
 ```
 
-### 配置
+复制 `.env.example` 为 `.env`，填写所选网络对应的密钥。目前即使只查询行情，启动时也需要 API Key 和 Secret。`.env` 从进程工作目录读取，推荐通过 MCP 客户端的 `env` 配置传入。
 
-此 MCP 服务器可与多种支持 MCP 的 AI 工具配合使用：
+## MCP 客户端配置
 
-[![Claude](https://img.shields.io/badge/Claude-FF6B35?style=for-the-badge&logo=anthropic&logoColor=white)](https://claude.ai)
-[![Cursor](https://img.shields.io/badge/Cursor-000000?style=for-the-badge&logo=cursor&logoColor=white)](https://cursor.com)
-[![Trae](https://img.shields.io/badge/Trae-00C851?style=for-the-badge&logo=ai&logoColor=white)](https://trae.ai)
+将绝对路径替换为本机编译后的仓库路径。MCP 客户端负责启动进程及连接 stdin/stdout；服务不提供 HTTP 端口。以下配置仅允许查询。
 
-#### MCP 配置
-
-将以下配置添加到您的 MCP 设置文件中：
 ```json
 {
   "mcpServers": {
     "binance": {
-      "command": "npx",
-      "args": ["binance-mcp-server"],
+      "command": "node",
+      "args": [
+        "/absolute/path/to/binance-mcp-server/dist/index.js"
+      ],
       "env": {
-        "BINANCE_API_KEY": "您的_api_密钥",
-        "BINANCE_API_SECRET": "您的_api_秘钥",
-        "BINANCE_TESTNET": "false"
+        "BINANCE_API_KEY": "your_testnet_api_key",
+        "BINANCE_API_SECRET": "your_testnet_api_secret",
+        "BINANCE_TESTNET": "true",
+        "BINANCE_ENABLE_TRADING": "false",
+        "BINANCE_ALLOW_MAINNET_TRADING": "false"
       }
     }
   }
 }
 ```
 
-> **注意**：如果您想使用币安测试网进行开发和测试，请将 `BINANCE_TESTNET` 设置为 `"true"`。
+2.0.0 发布后，可将客户端设为 `command: "npx"`、`args: ["-y", "binance-mcp-server@2.0.0"]`，保留相同环境变量。运行时版本统一读取 package.json，`MCP_SERVER_VERSION` 不再生效。
 
-#### Claude Code 一键设置
+## 交易开关与迁移
+
+省略 `BINANCE_TESTNET` 现在会选择测试网。布尔值仅接受字符串 `true`、`false`，拼写错误会导致启动失败。从 1.x 升级时请检查已有配置。
+
+测试网**下单和撤单**均须设置 `BINANCE_ENABLE_TRADING=true`。主网还须同时设置 `BINANCE_TESTNET=false`、`BINANCE_ALLOW_MAINNET_TRADING=true`，并使用主网密钥。这些是启动配置开关，不是逐笔交易确认；客户端是否弹出确认取决于客户端设置。仅授予所需 API 权限，无需提现权限。
+
+## 工具清单
+
+| 工具 | 参数及行为 |
+|---|---|
+| `get_price` | 必填 `symbol`。 |
+| `get_orderbook` | 必填 `symbol`；`limit` 默认 100，可选 5、10、20、50、100、500、1000、5000。 |
+| `get_klines` | 必填 `symbol`、`interval`；`limit` 1–1000，默认 500；未提供起止时间参数。 |
+| `get_24hr_ticker` | `symbol` 可选；省略则查询全部交易对。 |
+| `get_account_info` | 无需参数；仅返回非零余额，合计使用十进制计算。 |
+| `get_open_orders` | `symbol` 可选；省略则查询所有挂单。 |
+| `get_order_history` | 必填 `symbol`；`limit` 1–1000，默认 500；未提供时间或订单 ID 翻页。 |
+| `place_order` | 必填 `symbol`、`side` BUY/SELL、`type` MARKET/LIMIT、`quantity`；数量是基础资产数量的十进制字符串。LIMIT 必填 `price`，固定 GTC。 |
+| `cancel_order` | 必填 `symbol`、正安全整数 `orderId`。 |
+| `cancel_all_orders` | 必填 `symbol`；仅撤销**该交易对**的全部挂单。 |
+
+交易对使用大写字母及数字，例如 `1INCHUSDT`。价格和数量必须是正数十进制字符串。币安仍会校验交易对是否可用、价格步长、数量步长和最低成交金额。K 线周期支持 `1m`、`3m`、`5m`、`15m`、`30m`、`1h`、`2h`、`4h`、`6h`、`8h`、`12h`、`1d`、`3d`、`1w`、`1M`。
+
+结果以 MCP 文本内容返回 JSON；工具执行失败返回 `isError: true`。服务额外添加的时间戳为本地毫秒时间，币安原始字段保留原有含义。
+
+## 调用示例（测试网交易需先启用）
+
+```json
+{"name":"get_price","arguments":{"symbol":"BTCUSDT"}}
+{"name":"get_klines","arguments":{"symbol":"ETHUSDT","interval":"1h","limit":24}}
+{"name":"place_order","arguments":{"symbol":"BTCUSDT","side":"BUY","type":"LIMIT","quantity":"0.001","price":"50000"}}
+```
+
+## 开发与打包
 
 ```bash
-claude mcp add binance --env BINANCE_API_KEY=YOUR_API_KEY --env BINANCE_API_SECRET=YOUR_API_SECRET --env BINANCE_TESTNET=false -- npx -y binance-mcp-server
+npm run check
+npm audit --omit=dev
+npm pack --dry-run
+docker build -t binance-mcp-server .
+docker run --rm -i --env-file .env binance-mcp-server
 ```
 
+启动失败时检查 Node 版本、密钥及布尔值。交易被禁用时检查上述开关；签名或时间戳错误时检查网络与密钥是否对应、系统时钟是否准确。提交问题时不要附带密钥。
 
-### 环境设置
-
-#### 获取 API 密钥
-
-**测试网（推荐用于开发）：**
-1. 访问 [币安测试网](https://testnet.binance.vision/)
-2. 创建测试网账户（无需真实身份验证）
-3. 进入测试网账户的 API 管理
-4. 创建新的 API 密钥并开启交易权限
-5. 注意：测试网使用虚拟资金 - 完全安全，用于测试
-
-**主网（生产环境）：**
-1. 在 [币安](https://www.binance.com/) 创建已验证的账户
-2. 完成 KYC 身份验证
-3. 进入账户设置的 API 管理
-4. 创建新的 API 密钥并设置所需权限
-5. ⚠️ **警告：主网使用真实资金 - 请格外小心！**
-
-#### 配置
-
-创建 `.env` 文件：
-```env
-BINANCE_API_KEY=您的_api_密钥
-BINANCE_API_SECRET=您的_api_秘钥
-BINANCE_TESTNET=true  # 设置为 false 以使用主网（真实资金）
-```
-
-## 可用工具
-
-### 市场数据
-- `get_price` - 获取交易对当前价格
-- `get_orderbook` - 获取订单簿深度数据
-- `get_klines` - 获取 K 线/蜡烛图数据
-- `get_24hr_ticker` - 获取 24 小时价格统计
-
-### 账户
-- `get_account_info` - 获取账户信息和余额
-- `get_open_orders` - 获取当前挂单
-- `get_order_history` - 获取历史订单
-
-### 交易（主网和测试网）
-- `place_order` - 下新订单（支持主网和测试网）
-- `cancel_order` - 取消指定订单（支持主网和测试网）
-- `cancel_all_orders` - 取消所有挂单（支持主网和测试网）
-
-## 使用示例
-
-询问 Claude：
-- "获取比特币当前价格"
-- "显示 ETHUSDT 的订单簿"
-- "检查我的账户余额"
-- "以 50,000 美元价格限价买入 0.001 BTC"
-
-## 安全
-
-⚠️ **重要**：
-- 设置 `BINANCE_TESTNET=true` 使用虚拟资金进行安全测试
-- 设置 `BINANCE_TESTNET=false` 或省略以进行主网交易（真实资金）
-- 主网交易将在执行订单前显示警告
-
-## 开发
-
-```bash
-npm run build    # 编译 TypeScript
-npm run dev      # 开发模式
-npm run lint     # 运行代码检查
-```
+[Tutorial](https://github.com/ethancod1ng/binance-mcp-server/blob/main/docs/mcp-usage-tutorial.gif) · [Changelog](../CHANGELOG.md) · [MIT License](../LICENSE)

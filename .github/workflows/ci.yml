@@ -1,0 +1,29 @@
+name: CI
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [24, 26]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm audit --omit=dev --audit-level=high
+      - name: Verify packed install and stdio startup
+        shell: bash
+        run: |
+          archive=$(npm pack --silent)
+          install_dir=$(mktemp -d)
+          npm install --prefix "$install_dir" "$PWD/$archive" --omit=dev
+          MCP_TEST_ENTRY="$install_dir/node_modules/binance-mcp-server/dist/index.js" node --test test/protocol.test.cjs
+      - run: docker build -t binance-mcp-server:ci .

@@ -2,21 +2,10 @@ import {
   PlaceOrderSchema,
   CancelOrderSchema,
   CancelAllOrdersSchema,
-  PlaceOrderInput,
-  CancelOrderInput,
-  CancelAllOrdersInput,
 } from '../types/mcp.js';
 import { validateInput, validateSymbol, validateQuantity, validatePrice } from '../utils/validation.js';
 import { handleBinanceError } from '../utils/error-handling.js';
-import { isTestnetEnabled, getNetworkMode } from '../config/binance.js';
-
-function validateAndWarnMainnet(): string {
-  const networkMode = getNetworkMode();
-  if (networkMode === 'mainnet') {
-    console.warn('⚠️  WARNING: Trading on MAINNET with REAL money! Double-check your orders before confirming.');
-  }
-  return networkMode;
-}
+import { assertTradingAllowed } from '../config/binance.js';
 
 export const tradingTools = [
   {
@@ -51,7 +40,7 @@ export const tradingTools = [
       required: ['symbol', 'side', 'type', 'quantity'],
     },
     handler: async (binanceClient: any, args: unknown) => {
-      const networkMode = validateAndWarnMainnet();
+      const networkMode = assertTradingAllowed();
       
       const input = validateInput(PlaceOrderSchema, args);
       validateSymbol(input.symbol);
@@ -115,14 +104,16 @@ export const tradingTools = [
           description: '交易对符号，如 BTCUSDT',
         },
         orderId: {
-          type: 'number',
+          type: 'integer',
+          minimum: 1,
+          maximum: Number.MAX_SAFE_INTEGER,
           description: '订单ID',
         },
       },
       required: ['symbol', 'orderId'],
     },
     handler: async (binanceClient: any, args: unknown) => {
-      const networkMode = validateAndWarnMainnet();
+      const networkMode = assertTradingAllowed();
       
       const input = validateInput(CancelOrderSchema, args);
       validateSymbol(input.symbol);
@@ -170,7 +161,7 @@ export const tradingTools = [
       required: ['symbol'],
     },
     handler: async (binanceClient: any, args: unknown) => {
-      const networkMode = validateAndWarnMainnet();
+      const networkMode = assertTradingAllowed();
       
       const input = validateInput(CancelAllOrdersSchema, args);
       validateSymbol(input.symbol);

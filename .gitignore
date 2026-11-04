@@ -58,3 +58,5 @@ temp/
 
 # TypeScript cache
 *.tsbuildinfo
+# npm package archives
+*.tgz

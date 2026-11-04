@@ -1,3 +1,5 @@
+import Decimal from 'decimal.js';
+const BalanceDecimal = Decimal.clone({ precision: 80 });
 import {
   GetAccountInfoSchema,
   GetOpenOrdersSchema,
@@ -38,7 +40,7 @@ export const accountTools = [
               asset: balance.asset,
               free: balance.free,
               locked: balance.locked,
-              total: (parseFloat(balance.free) + parseFloat(balance.locked)).toString(),
+              total: new BalanceDecimal(balance.free).plus(balance.locked).toFixed(),
             })),
           timestamp: Date.now(),
         };
@@ -115,7 +117,9 @@ export const accountTools = [
           description: '交易对符号，如 BTCUSDT',
         },
         limit: {
-          type: 'number',
+          type: 'integer',
+          minimum: 1,
+          maximum: 1000,
           description: '数量限制，默认500',
           default: 500,
         },
