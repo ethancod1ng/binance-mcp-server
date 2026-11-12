@@ -2,13 +2,10 @@ import {
   PlaceOrderSchema,
   CancelOrderSchema,
   CancelAllOrdersSchema,
-  PlaceOrderInput,
-  CancelOrderInput,
-  CancelAllOrdersInput,
 } from '../types/mcp.js';
 import { validateInput, validateSymbol, validateQuantity, validatePrice } from '../utils/validation.js';
 import { handleBinanceError } from '../utils/error-handling.js';
-import { isTestnetEnabled, getNetworkMode } from '../config/binance.js';
+import { getNetworkMode } from '../config/binance.js';
 
 function validateAndWarnMainnet(): string {
   const networkMode = getNetworkMode();
@@ -115,7 +112,9 @@ export const tradingTools = [
           description: '交易对符号，如 BTCUSDT',
         },
         orderId: {
-          type: 'number',
+          type: 'integer',
+          minimum: 1,
+          maximum: Number.MAX_SAFE_INTEGER,
           description: '订单ID',
         },
       },

@@ -25,13 +25,13 @@ export class BinanceMCPServer {
     this.server = new Server({
       name: serverConfig.name,
       version: serverConfig.version,
-    });
+    }, { capabilities: { tools: {} } });
 
-      this.binanceClient = Binance({
-          apiKey: config.apiKey,
-          apiSecret: config.apiSecret,
-          httpBase: config.sandbox ? 'https://testnet.binance.vision' : 'https://api.binance.com',
-      });
+    this.binanceClient = Binance({
+      apiKey: config.apiKey,
+      apiSecret: config.apiSecret,
+      httpBase: config.sandbox ? 'https://testnet.binance.vision' : 'https://api.binance.com',
+    });
 
     this.tools = new Map();
     this.setupTools();
@@ -70,7 +70,7 @@ export class BinanceMCPServer {
       }
 
       try {
-        const result = await tool.handler(this.binanceClient, args);
+        const result = await tool.handler(this.binanceClient, args ?? {});
         return {
           content: [
             {

@@ -3,10 +3,6 @@ import {
   GetOrderBookSchema,
   GetKlinesSchema,
   Get24hrTickerSchema,
-  GetPriceInput,
-  GetOrderBookInput,
-  GetKlinesInput,
-  Get24hrTickerInput,
 } from '../types/mcp.js';
 import { validateInput, validateSymbol } from '../utils/validation.js';
 import { handleBinanceError } from '../utils/error-handling.js';
@@ -53,7 +49,8 @@ export const marketDataTools = [
           description: '交易对符号，如 BTCUSDT',
         },
         limit: {
-          type: 'number',
+          type: 'integer',
+          enum: [5, 10, 20, 50, 100, 500, 1000, 5000],
           description: '深度限制，默认100',
           default: 100,
         },
@@ -105,7 +102,9 @@ export const marketDataTools = [
           description: '时间间隔',
         },
         limit: {
-          type: 'number',
+          type: 'integer',
+          minimum: 1,
+          maximum: 1000,
           description: '数量限制，默认500',
           default: 500,
         },

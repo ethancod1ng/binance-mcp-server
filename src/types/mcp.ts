@@ -6,13 +6,13 @@ export const GetPriceSchema = z.object({
 
 export const GetOrderBookSchema = z.object({
   symbol: z.string().describe('交易对符号，如 BTCUSDT'),
-  limit: z.number().optional().default(100).describe('深度限制，默认100'),
+  limit: z.number().int().refine(value => [5, 10, 20, 50, 100, 500, 1000, 5000].includes(value), 'Unsupported depth limit').optional().default(100).describe('深度限制，默认100'),
 });
 
 export const GetKlinesSchema = z.object({
   symbol: z.string().describe('交易对符号，如 BTCUSDT'),
   interval: z.enum(['1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '8h', '12h', '1d', '3d', '1w', '1M']).describe('时间间隔'),
-  limit: z.number().optional().default(500).describe('数量限制，默认500'),
+  limit: z.number().int().min(1).max(1000).optional().default(500).describe('数量限制，默认500'),
 });
 
 export const Get24hrTickerSchema = z.object({
@@ -27,7 +27,7 @@ export const GetOpenOrdersSchema = z.object({
 
 export const GetOrderHistorySchema = z.object({
   symbol: z.string().describe('交易对符号'),
-  limit: z.number().optional().default(500).describe('数量限制，默认500'),
+  limit: z.number().int().min(1).max(1000).optional().default(500).describe('数量限制，默认500'),
 });
 
 export const PlaceOrderSchema = z.object({
@@ -40,7 +40,7 @@ export const PlaceOrderSchema = z.object({
 
 export const CancelOrderSchema = z.object({
   symbol: z.string().describe('交易对符号'),
-  orderId: z.number().describe('订单ID'),
+  orderId: z.number().int().positive().max(Number.MAX_SAFE_INTEGER).describe('订单ID'),
 });
 
 export const CancelAllOrdersSchema = z.object({

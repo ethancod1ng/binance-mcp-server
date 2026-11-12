@@ -6,14 +6,14 @@ export function validateInput<T>(schema: z.ZodSchema<T>, input: unknown): T {
   } catch (error) {
     if (error instanceof z.ZodError) {
       const issues = error.issues.map(issue => `${issue.path.join('.')}: ${issue.message}`).join(', ');
-      throw new Error(`Validation error: ${issues}`);
+      throw new Error(`Validation error: ${issues}`, { cause: error });
     }
     throw error;
   }
 }
 
 export function isValidSymbol(symbol: string): boolean {
-  return /^[A-Z]{3,}[A-Z]{3,}$/.test(symbol);
+  return /^[A-Z0-9]{5,30}$/.test(symbol);
 }
 
 export function validateSymbol(symbol: string): void {
@@ -24,14 +24,14 @@ export function validateSymbol(symbol: string): void {
 
 export function validateQuantity(quantity: string): void {
   const num = parseFloat(quantity);
-  if (isNaN(num) || num <= 0) {
+  if (!/^(?:0|[1-9]\d*)(?:\.\d+)?$/.test(quantity) || !Number.isFinite(num) || num <= 0) {
     throw new Error(`Invalid quantity: ${quantity}. Must be a positive number`);
   }
 }
 
 export function validatePrice(price: string): void {
   const num = parseFloat(price);
-  if (isNaN(num) || num <= 0) {
+  if (!/^(?:0|[1-9]\d*)(?:\.\d+)?$/.test(price) || !Number.isFinite(num) || num <= 0) {
     throw new Error(`Invalid price: ${price}. Must be a positive number`);
   }
 }

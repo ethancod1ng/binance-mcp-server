@@ -1,6 +1,6 @@
 {
   "name": "binance-mcp-server",
-  "version": "1.1.2",
+  "version": "2.0.0",
   "description": "MCP server for Binance market data and trading integration",
   "main": "dist/index.js",
   "bin": {
@@ -11,8 +11,11 @@
     "start": "node dist/index.js",
     "dev": "tsx src/index.ts",
     "watch": "nodemon --exec tsx src/index.ts",
-    "lint": "eslint src/**/*.ts",
-    "typecheck": "tsc --noEmit"
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run build && node --test test/*.test.cjs",
+    "check": "npm run typecheck && npm run lint && npm test",
+    "prepack": "npm run build"
   },
   "keywords": [
     "binance",
@@ -34,26 +37,28 @@
   "files": [
     "dist",
     "README.md",
-    "README_zh.md",
-    "README_ja.md",
-    "CLAUDE.md"
+    "docs/README_zh.md",
+    "docs/README_ja.md",
+    "CHANGELOG.md",
+    "LICENSE"
   ],
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^0.4.0",
-    "binance-api-node": "^0.12.6",
-    "dotenv": "^16.3.1",
-    "zod": "^3.22.4"
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "binance-api-node": "^0.13.10",
+    "decimal.js": "^10.6.0",
+    "dotenv": "^18.0.9",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
-    "@types/node": "^20.10.0",
-    "@typescript-eslint/eslint-plugin": "^6.13.0",
-    "@typescript-eslint/parser": "^6.13.0",
-    "eslint": "^8.54.0",
-    "nodemon": "^3.0.1",
-    "tsx": "^4.6.0",
-    "typescript": "^5.3.0"
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^24.19.2",
+    "eslint": "^10.14.0",
+    "nodemon": "^3.1.14",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.72.1"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=24.0.0"
   }
 }

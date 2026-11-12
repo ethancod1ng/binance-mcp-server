@@ -1,3 +1,5 @@
+> Historical design document. Some requirements below describe the original testnet-only design. For current behavior, see [README](../README.md) and [CHANGELOG](../CHANGELOG.md).
+
 # Binance MCP Server 开发需求
 
 请开发一个完整的 Binance MCP (Model Context Protocol) Server，让 Claude 能够通过标准化接口访问 Binance 交易所的 API 功能。
