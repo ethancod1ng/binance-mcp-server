@@ -20,7 +20,7 @@ cp .env.example .env
 
 ## MCP 客户端配置
 
-将绝对路径替换为本机编译后的仓库路径。MCP 客户端负责启动进程及连接 stdin/stdout；服务不提供 HTTP 端口。以下配置仅允许查询。
+将绝对路径替换为本机编译后的仓库路径。MCP 客户端负责启动进程及连接 stdin/stdout；服务不提供 HTTP 端口。
 
 ```json
 {
@@ -33,9 +33,7 @@ cp .env.example .env
       "env": {
         "BINANCE_API_KEY": "your_testnet_api_key",
         "BINANCE_API_SECRET": "your_testnet_api_secret",
-        "BINANCE_TESTNET": "true",
-        "BINANCE_ENABLE_TRADING": "false",
-        "BINANCE_ALLOW_MAINNET_TRADING": "false"
+        "BINANCE_TESTNET": "true"
       }
     }
   }
@@ -44,11 +42,9 @@ cp .env.example .env
 
 2.0.0 发布后，可将客户端设为 `command: "npx"`、`args: ["-y", "binance-mcp-server@2.0.0"]`，保留相同环境变量。运行时版本统一读取 package.json，`MCP_SERVER_VERSION` 不再生效。
 
-## 交易开关与迁移
+## 网络选择
 
-省略 `BINANCE_TESTNET` 现在会选择测试网。布尔值仅接受字符串 `true`、`false`，拼写错误会导致启动失败。从 1.x 升级时请检查已有配置。
-
-测试网**下单和撤单**均须设置 `BINANCE_ENABLE_TRADING=true`。主网还须同时设置 `BINANCE_TESTNET=false`、`BINANCE_ALLOW_MAINNET_TRADING=true`，并使用主网密钥。这些是启动配置开关，不是逐笔交易确认；客户端是否弹出确认取决于客户端设置。仅授予所需 API 权限，无需提现权限。
+使用 `BINANCE_TESTNET` 选择网络：设为 `"true"` 使用测试网；其他值（包括省略）使用主网。请使用所选网络对应的密钥。所有工具（包括**下单和撤单**）在两个网络下均可直接使用，无需额外的交易开关。主网执行下单或撤单前，服务会输出涉及真实资金的警告，但不会拦截操作。仅授予所需 API 权限，无需提现权限。
 
 ## 工具清单
 
@@ -69,7 +65,7 @@ cp .env.example .env
 
 结果以 MCP 文本内容返回 JSON；工具执行失败返回 `isError: true`。服务额外添加的时间戳为本地毫秒时间，币安原始字段保留原有含义。
 
-## 调用示例（测试网交易需先启用）
+## 调用示例
 
 ```json
 {"name":"get_price","arguments":{"symbol":"BTCUSDT"}}
@@ -87,6 +83,6 @@ docker build -t binance-mcp-server .
 docker run --rm -i --env-file .env binance-mcp-server
 ```
 
-启动失败时检查 Node 版本、密钥及布尔值。交易被禁用时检查上述开关；签名或时间戳错误时检查网络与密钥是否对应、系统时钟是否准确。提交问题时不要附带密钥。
+启动失败时检查 Node 版本和密钥；签名或时间戳错误时检查网络与密钥是否对应、系统时钟是否准确。提交问题时不要附带密钥。
 
 [Tutorial](https://github.com/ethancod1ng/binance-mcp-server/blob/main/docs/mcp-usage-tutorial.gif) · [Changelog](../CHANGELOG.md) · [MIT License](../LICENSE)

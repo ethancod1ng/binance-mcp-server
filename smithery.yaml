@@ -1,7 +1,7 @@
 startCommand:
   type: stdio
   commandFunction: |-
-    (config) => ({ command: 'node', args: ['dist/index.js'], env: { BINANCE_API_KEY: config.binanceApiKey, BINANCE_API_SECRET: config.binanceApiSecret, BINANCE_TESTNET: String(config.binanceTestnet ?? true), BINANCE_ENABLE_TRADING: String(config.enableTrading ?? false), BINANCE_ALLOW_MAINNET_TRADING: String(config.allowMainnetTrading ?? false) } })
+    (config) => ({ command: 'node', args: ['dist/index.js'], env: { BINANCE_API_KEY: config.binanceApiKey, BINANCE_API_SECRET: config.binanceApiSecret, BINANCE_TESTNET: String(config.binanceTestnet ?? true) } })
   configSchema:
     type: object
     required: [binanceApiKey, binanceApiSecret]
@@ -15,17 +15,7 @@ startCommand:
       binanceTestnet:
         type: boolean
         default: true
-      enableTrading:
-        type: boolean
-        default: false
-        description: Allow placing and cancelling orders
-      allowMainnetTrading:
-        type: boolean
-        default: false
-        description: Additional explicit opt-in for real-money order mutations
   exampleConfig:
     binanceApiKey: your_testnet_api_key
     binanceApiSecret: your_testnet_api_secret
     binanceTestnet: true
-    enableTrading: false
-    allowMainnetTrading: false

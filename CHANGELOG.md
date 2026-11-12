@@ -5,11 +5,6 @@
 ### Breaking changes and migration
 
 - Node.js 24 or newer is required; Docker uses Node 24.
-- An omitted BINANCE_TESTNET now selects testnet, rather than mainnet. Boolean
-  flags accept only the exact strings `true` and `false`.
-- Placing AND cancelling orders now require BINANCE_ENABLE_TRADING=true.
-  Mainnet also requires BINANCE_TESTNET=false and BINANCE_ALLOW_MAINNET_TRADING=true.
-  Keep both trading flags false to query only. Choose keys issued for the selected network.
 - Runtime version comes from package.json. MCP_SERVER_VERSION is no longer used.
 - Price and quantity must be positive plain decimal strings. Exponents, whitespace,
   non-finite values and numeric suffixes are rejected. Limits and order IDs are checked.
@@ -23,7 +18,7 @@
 - Use decimal arithmetic for account balance totals; support symbols containing digits.
 - Remove unused client configuration fields that never affected requests.
 - Synchronize package/lock/runtime versions; build before packing; include translated docs.
-- Add offline trading guard, validation, balance and stdio protocol tests, CI, and LICENSE.
+- Add offline validation, balance and stdio protocol tests, CI, and LICENSE.
 - Update English, Chinese, Japanese and Smithery configuration and correct deployment docs.
 
 ## 1.1.2 — Repository version, 2026-01-31

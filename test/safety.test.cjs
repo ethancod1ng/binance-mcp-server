@@ -5,7 +5,7 @@ const { tradingTools } = require('../dist/tools/trading.js');
 const { accountTools } = require('../dist/tools/account.js');
 const { validatePrice, validateQuantity, validateSymbol } = require('../dist/utils/validation.js');
 const { GetKlinesSchema, GetOrderBookSchema, CancelOrderSchema } = require('../dist/types/mcp.js');
-const keys = ['BINANCE_API_KEY', 'BINANCE_API_SECRET', 'BINANCE_TESTNET', 'BINANCE_ENABLE_TRADING', 'BINANCE_ALLOW_MAINNET_TRADING', 'MCP_SERVER_VERSION'];
+const keys = ['BINANCE_API_KEY', 'BINANCE_API_SECRET', 'BINANCE_TESTNET', 'MCP_SERVER_VERSION'];
 let saved;
 beforeEach(() => {
   saved = Object.fromEntries(keys.map(key => [key, process.env[key]]));
@@ -26,39 +26,53 @@ function mockClient(calls) {
     calls.push({ name, params }); return name === 'cancelOpenOrders' ? [] : { ...params, orderId: 1 };
   }]));
 }
-test('missing network selects testnet; all mutations are disabled by default', async () => {
-  assert.equal(getNetworkMode(), 'testnet');
-  const calls = [];
-  for (const tool of tradingTools) await assert.rejects(tool.handler(mockClient(calls), inputs[tool.name]), /Trading is disabled/);
-  assert.equal(calls.length, 0);
-});
-test('malformed boolean flags and missing credentials fail at startup', () => {
-  for (const key of ['BINANCE_TESTNET', 'BINANCE_ENABLE_TRADING', 'BINANCE_ALLOW_MAINNET_TRADING']) {
-    process.env[key] = 'TRUE'; assert.throws(validateEnvironment, /must be exactly/); delete process.env[key];
+function captureWarnings() {
+  const warnings = [];
+  const original = console.warn;
+  console.warn = (...args) => warnings.push(args.join(' '));
+  return { warnings, restore: () => { console.warn = original; } };
+}
+test('missing network selects mainnet and non-true values are parsed leniently', () => {
+  assert.equal(getNetworkMode(), 'mainnet');
+  for (const value of ['TRUE', '1', 'yes', 'false', '']) {
+    process.env.BINANCE_TESTNET = value;
+    assert.equal(getNetworkMode(), 'mainnet');
+    assert.doesNotThrow(validateEnvironment);
   }
+  process.env.BINANCE_TESTNET = 'true';
+  assert.equal(getNetworkMode(), 'testnet');
+  assert.doesNotThrow(validateEnvironment);
+});
+test('missing credentials fail at startup', () => {
   delete process.env.BINANCE_API_KEY; assert.throws(validateEnvironment, /must be set/);
 });
-test('testnet mutations require opt-in and LIMIT orders use GTC', async () => {
-  process.env.BINANCE_ENABLE_TRADING = 'true';
-  const calls = [];
-  for (const tool of tradingTools) {
-    const result = await tool.handler(mockClient(calls), inputs[tool.name]);
-    assert.equal(result.network, 'testnet');
-  }
-  assert.equal(calls.length, 3);
-  assert.equal(calls[0].params.timeInForce, 'GTC');
+test('mutations reach the client on mainnet without extra flags and warn without blocking', async () => {
+  const capture = captureWarnings();
+  try {
+    const calls = [];
+    for (const tool of tradingTools) {
+      const result = await tool.handler(mockClient(calls), inputs[tool.name]);
+      assert.equal(result.network, 'mainnet');
+    }
+    assert.equal(calls.length, 3);
+    assert.equal(calls[0].params.timeInForce, 'GTC');
+    assert.ok(capture.warnings.some(message => /MAINNET/.test(message)));
+  } finally { capture.restore(); }
 });
-test('mainnet mutations require a separate opt-in', async () => {
-  process.env.BINANCE_TESTNET = 'false'; process.env.BINANCE_ENABLE_TRADING = 'true';
-  const calls = [];
-  for (const tool of tradingTools) await assert.rejects(tool.handler(mockClient(calls), inputs[tool.name]), /Mainnet trading is disabled/);
-  assert.equal(calls.length, 0);
-  process.env.BINANCE_ALLOW_MAINNET_TRADING = 'true';
-  for (const tool of tradingTools) assert.equal((await tool.handler(mockClient(calls), inputs[tool.name])).network, 'mainnet');
-  assert.equal(calls.length, 3);
+test('mutations reach the client on testnet without extra flags and do not warn', async () => {
+  process.env.BINANCE_TESTNET = 'true';
+  const capture = captureWarnings();
+  try {
+    const calls = [];
+    for (const tool of tradingTools) {
+      const result = await tool.handler(mockClient(calls), inputs[tool.name]);
+      assert.equal(result.network, 'testnet');
+    }
+    assert.equal(calls.length, 3);
+    assert.equal(capture.warnings.length, 0);
+  } finally { capture.restore(); }
 });
 test('invalid orders never reach Binance', async () => {
-  process.env.BINANCE_ENABLE_TRADING = 'true';
   const calls = [], tool = tradingTools[0], client = mockClient(calls);
   for (const quantity of ['1abc', 'Infinity', '-1', '0']) {
     await assert.rejects(tool.handler(client, { ...inputs.place_order, quantity }));

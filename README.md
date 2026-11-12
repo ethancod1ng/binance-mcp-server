@@ -20,7 +20,7 @@ Copy `.env.example` to `.env` and use keys for the selected network. Even market
 
 ## MCP client configuration
 
-Replace the absolute path with your built checkout. The client launches and owns this stdio process; it is not an HTTP service. The configuration below allows queries only.
+Replace the absolute path with your built checkout. The client launches and owns this stdio process; it is not an HTTP service.
 
 ```json
 {
@@ -33,9 +33,7 @@ Replace the absolute path with your built checkout. The client launches and owns
       "env": {
         "BINANCE_API_KEY": "your_testnet_api_key",
         "BINANCE_API_SECRET": "your_testnet_api_secret",
-        "BINANCE_TESTNET": "true",
-        "BINANCE_ENABLE_TRADING": "false",
-        "BINANCE_ALLOW_MAINNET_TRADING": "false"
+        "BINANCE_TESTNET": "true"
       }
     }
   }
@@ -44,11 +42,9 @@ Replace the absolute path with your built checkout. The client launches and owns
 
 After 2.0.0 is published, a client may use `command: "npx"` with `args: ["-y", "binance-mcp-server@2.0.0"]` and the same environment settings. Runtime version comes from package.json; `MCP_SERVER_VERSION` is ignored.
 
-## Trading and migration
+## Network selection
 
-Omitting `BINANCE_TESTNET` now selects testnet. Flags must be exactly `true` or `false`; other values fail startup. Old configurations must be reviewed when upgrading from 1.x.
-
-To place **or cancel** orders on testnet, set `BINANCE_ENABLE_TRADING=true`. Mainnet additionally requires `BINANCE_TESTNET=false` and `BINANCE_ALLOW_MAINNET_TRADING=true`, with mainnet credentials. These switches are not per-order confirmations. Client confirmation behavior depends on your MCP client. Use only the API permissions needed; withdrawal permission is unnecessary.
+`BINANCE_TESTNET` selects the network: `"true"` uses testnet; any other value — including omitting it — uses mainnet. Use keys issued for the selected network. All tools, including placing and cancelling orders, work on both networks; no separate trading switch is required. Before an order mutation on mainnet, the server logs a warning that real funds are involved; the warning does not block the operation. Use only the API permissions needed; withdrawal permission is unnecessary.
 
 ## Tools
 
@@ -69,7 +65,7 @@ Symbols are uppercase and may contain digits, e.g. `1INCHUSDT`. Prices and quant
 
 Results contain JSON as MCP text content. Tool execution errors return `isError: true`. Query timestamps added by this server are local milliseconds; source fields retain Binance semantics.
 
-## Examples (testnet trading must first be enabled)
+## Examples
 
 ```json
 {"name":"get_price","arguments":{"symbol":"BTCUSDT"}}
@@ -87,6 +83,6 @@ docker build -t binance-mcp-server .
 docker run --rm -i --env-file .env binance-mcp-server
 ```
 
-If startup fails, check Node version, credentials and boolean flags. A disabled-trading error requires the explicit switches above. For signature/timestamp errors, verify the network/key pair and system clock. Never paste credentials into issue reports.
+If startup fails, check Node version and credentials. For signature/timestamp errors, verify the network/key pair and system clock. Never paste credentials into issue reports.
 
 [Tutorial](https://github.com/ethancod1ng/binance-mcp-server/blob/main/docs/mcp-usage-tutorial.gif) · [Changelog](CHANGELOG.md) · [MIT License](LICENSE)

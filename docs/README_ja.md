@@ -20,7 +20,7 @@ cp .env.example .env
 
 ## MCP クライアント設定
 
-絶対パスをビルド済みリポジトリのパスに置き換えてください。クライアントがプロセスを起動し、stdin/stdout に接続します。HTTP サーバーではありません。以下は照会専用の設定です。
+絶対パスをビルド済みリポジトリのパスに置き換えてください。クライアントがプロセスを起動し、stdin/stdout に接続します。HTTP サーバーではありません。
 
 ```json
 {
@@ -33,9 +33,7 @@ cp .env.example .env
       "env": {
         "BINANCE_API_KEY": "your_testnet_api_key",
         "BINANCE_API_SECRET": "your_testnet_api_secret",
-        "BINANCE_TESTNET": "true",
-        "BINANCE_ENABLE_TRADING": "false",
-        "BINANCE_ALLOW_MAINNET_TRADING": "false"
+        "BINANCE_TESTNET": "true"
       }
     }
   }
@@ -44,11 +42,9 @@ cp .env.example .env
 
 2.0.0 公開後は、クライアントを `command: "npx"`、`args: ["-y", "binance-mcp-server@2.0.0"]` に変更できます。環境変数は同じです。バージョンは package.json から取得し、`MCP_SERVER_VERSION` は使用しません。
 
-## 取引スイッチと移行
+## ネットワーク選択
 
-`BINANCE_TESTNET` を省略するとテストネットになります。真偽値は文字列 `true` と `false` のみ受け付け、それ以外は起動エラーになります。1.x から更新する場合は既存設定を確認してください。
-
-テストネットでの**発注と取消**には `BINANCE_ENABLE_TRADING=true` が必要です。メインネットでは、さらに `BINANCE_TESTNET=false` と `BINANCE_ALLOW_MAINNET_TRADING=true`、メインネット用キーが必要です。これらは設定上の許可であり、注文ごとの確認ではありません。確認画面の有無はクライアントに依存します。必要な API 権限だけを付与してください。出金権限は不要です。
+`BINANCE_TESTNET` でネットワークを選択します：`"true"` でテストネット、それ以外の値（省略を含む）ではメインネットを使用します。選択したネットワークのキーを使用してください。**発注と取消**を含むすべてのツールは両ネットワークで利用でき、追加の取引スイッチは不要です。メインネットでの注文操作の前に、実資金に関する警告がログに表示されますが、操作はブロックされません。必要な API 権限だけを付与してください。出金権限は不要です。
 
 ## ツール一覧
 
@@ -69,7 +65,7 @@ cp .env.example .env
 
 結果は MCP テキスト内の JSON です。ツール実行エラーは `isError: true` を返します。サーバーが追加するタイムスタンプはローカル時刻のミリ秒で、Binance 由来の値は元の意味を保持します。
 
-## 使用例（取引には事前の有効化が必要）
+## 使用例
 
 ```json
 {"name":"get_price","arguments":{"symbol":"BTCUSDT"}}
@@ -87,6 +83,6 @@ docker build -t binance-mcp-server .
 docker run --rm -i --env-file .env binance-mcp-server
 ```
 
-起動できない場合は Node バージョン、キー、真偽値を確認してください。取引無効エラーは上記スイッチを確認し、署名・時刻エラーはネットワークとキーの組み合わせ、システム時計を確認してください。Issue にキーを記載しないでください。
+起動できない場合は Node バージョンとキーを確認してください。署名・時刻エラーはネットワークとキーの組み合わせ、システム時計を確認してください。Issue にキーを記載しないでください。
 
 [Tutorial](https://github.com/ethancod1ng/binance-mcp-server/blob/main/docs/mcp-usage-tutorial.gif) · [Changelog](../CHANGELOG.md) · [MIT License](../LICENSE)
