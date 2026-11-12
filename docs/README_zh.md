@@ -2,9 +2,17 @@
 
 [English](../README.md) | [中文](README_zh.md) | [日本語](README_ja.md)
 
+[![npm](https://img.shields.io/npm/dt/binance-mcp-server?logo=npm)](https://www.npmjs.com/package/binance-mcp-server)
+
 面向支持 MCP 的 AI 客户端，提供币安**现货**查询及交易功能，使用 stdio，共 10 个工具。要求 Node.js **24+**。未提供合约、提现或行情流订阅工具。
 
-**2.0.0 尚未发布。** 发布前请从源码安装。升级行为见[发布说明](../CHANGELOG.md)。
+**2.0.0 已发布到 npm。** 可用 `npm install -g binance-mcp-server` 安装，也可按下面的步骤从源码安装。升级行为见[发布说明](../CHANGELOG.md)。
+
+## 📹 视频教程
+
+观看我们的综合 MCP 使用教程，快速上手：
+
+![MCP 使用教程](mcp-usage-tutorial.gif)
 
 ## 从源码安装
 

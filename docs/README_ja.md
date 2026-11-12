@@ -2,9 +2,17 @@
 
 [English](../README.md) | [中文](README_zh.md) | [日本語](README_ja.md)
 
+[![npm](https://img.shields.io/npm/dt/binance-mcp-server?logo=npm)](https://www.npmjs.com/package/binance-mcp-server)
+
 MCP 対応 AI クライアント向けの Binance **現物取引**サーバーです。stdio を使用し、10 個のツールを提供します。Node.js **24+** が必要です。先物、出金、ストリーミング購読は提供しません。
 
-**2.0.0 は未公開です。** 公開までは以下のソースからの手順を使用してください。[移行ガイド](../CHANGELOG.md)も参照してください。
+**2.0.0 は npm で公開されています。** `npm install -g binance-mcp-server` でインストールするか、以下のソースからの手順を使用してください。[移行ガイド](../CHANGELOG.md)も参照してください。
+
+## 📹 ビデオチュートリアル
+
+包括的な MCP 使用チュートリアルを視聴して、すぐに始めましょう：
+
+![MCP 使用チュートリアル](mcp-usage-tutorial.gif)
 
 ## ソースからセットアップ
 

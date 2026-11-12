@@ -2,9 +2,19 @@
 
 [English](README.md) | [中文](docs/README_zh.md) | [日本語](docs/README_ja.md)
 
+<a href="https://www.npmjs.com/package/binance-mcp-server" target="_blank" rel="noopener noreferrer">
+  <img src="https://img.shields.io/npm/dt/binance-mcp-server?logo=npm" alt="npm">
+</a>
+
 A Binance **Spot** MCP server for compatible AI clients, using stdio and ten tools. Node.js **24+** is required. Futures, withdrawals and streaming subscriptions are not exposed.
 
-**2.0.0 is unreleased.** Until it is published, use the source setup below. See [migration notes](CHANGELOG.md).
+**2.0.0 is published on npm.** Install it with `npm install -g binance-mcp-server`, or use the source setup below. See [migration notes](CHANGELOG.md).
+
+## 📹 Video Tutorial
+
+Watch our comprehensive MCP usage tutorial to get started quickly:
+
+![MCP Usage Tutorial](docs/mcp-usage-tutorial.gif)
 
 ## Setup from source
 
